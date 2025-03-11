@@ -1,0 +1,20 @@
+﻿@model List<CategoryModel>
+
+<h1>類別清單</h1>
+<table>
+    <thead>
+        <tr>
+            <th>類別名稱</th>
+            <th>顯示順序</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(u => u.DisplayOrder))
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.DisplayOrder</td>
+            </tr>
+        }
+    </tbody>
+</table>
