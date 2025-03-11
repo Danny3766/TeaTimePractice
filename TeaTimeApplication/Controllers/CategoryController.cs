@@ -30,5 +30,14 @@ namespace TeaTimeApplication.Controllers
 
             return View(categoryList);
         }
+
+        /// <summary>
+        /// 類別清單 - 新增
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
