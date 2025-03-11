@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TeaTimeApplication.Models;
 
 namespace TeaTimeApplication.Data
 {
@@ -11,5 +12,7 @@ namespace TeaTimeApplication.Data
         : base(options)
         {
         }
+
+        public DbSet<CategoryModel> Categories { get; set; }
     }
 }
