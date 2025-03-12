@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace TeaTimeApplication.Migrations
+namespace TeaTime.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTableToDb : Migration

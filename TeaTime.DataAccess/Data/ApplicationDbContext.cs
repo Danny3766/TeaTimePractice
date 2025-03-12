@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TeaTimeApplication.Models;
 
-namespace TeaTimeApplication.Data
+namespace TeaTime.DataAccess.Data
 {
     /// <summary>
     /// 資料庫 Context
