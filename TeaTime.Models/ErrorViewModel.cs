@@ -1,4 +1,4 @@
-namespace TeaTimeApplication.Models
+namespace TeaTime.Models
 {
     public class ErrorViewModel
     {
