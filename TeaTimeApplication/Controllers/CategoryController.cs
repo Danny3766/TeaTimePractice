@@ -58,6 +58,9 @@ namespace TeaTimeApplication.Controllers
             {
                 _db.Categories.Add(category);
                 _db.SaveChanges();
+
+                // 新增 TempData["success"]
+                TempData["success"] = "類別新增成功!!!";
                 return RedirectToAction(nameof(Index));
             }
             
@@ -99,6 +102,9 @@ namespace TeaTimeApplication.Controllers
             {
                 _db.Categories.Update(category);
                 _db.SaveChanges();
+
+                // 新增 TempData["success"]
+                TempData["success"] = "類別編輯成功!!!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -144,6 +150,9 @@ namespace TeaTimeApplication.Controllers
 
             _db.Categories.Remove(obj);
             _db.SaveChanges();
+
+            // 新增 TempData["success"]
+            TempData["success"] = "類別刪除成功!!!";
             return RedirectToAction(nameof(Index));
         }
     }
