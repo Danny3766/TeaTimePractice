@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using TeaTimeApplication.Models;
+using TeaTime.Models;
 
 namespace TeaTimeApplication.Controllers
 {

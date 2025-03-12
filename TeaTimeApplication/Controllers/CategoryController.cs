@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TeaTime.DataAccess.Data;
+using TeaTime.Models;
 
 namespace TeaTimeApplication.Controllers
 {
