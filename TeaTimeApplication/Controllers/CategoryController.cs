@@ -30,5 +30,38 @@ namespace TeaTimeApplication.Controllers
 
             return View(categoryList);
         }
+
+        /// <summary>
+        /// 類別清單 - 新增
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 類別清單 - 資料輸入到 DB
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Create(CategoryModel category)
+        {
+            if (category.Name == category.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name", "類別名稱不能和顯示順序一樣");
+            }
+
+            // 資料驗證
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Add(category);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View();
+        }
     }
 }
