@@ -48,10 +48,15 @@ namespace TeaTimeApplication.Controllers
         [HttpPost]
         public IActionResult Create(CategoryModel category)
         {
-            _db.Categories.Add(category);
-            _db.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
+            // 資料驗證
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Add(category);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            
+            return View();
         }
     }
 }
