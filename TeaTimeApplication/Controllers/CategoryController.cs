@@ -132,7 +132,7 @@ namespace TeaTimeApplication.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete, ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeleteByPost(int? id)
         {
             CategoryModel? obj = _db.Categories.Find(id);
