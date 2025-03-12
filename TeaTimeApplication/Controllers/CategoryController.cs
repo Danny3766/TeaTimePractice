@@ -104,5 +104,47 @@ namespace TeaTimeApplication.Controllers
 
             return View();
         }
+
+        /// <summary>
+        /// 刪除類別 - 刪除表單
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult Delete(int? id)
+        {
+            if (id is null || id == 0)
+            {
+                return NotFound();
+            }
+
+            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+
+            if (categoryFromDb is null)
+            {
+                return NotFound();
+            }
+
+            return View(categoryFromDb);
+        }
+
+        /// <summary>
+        /// 刪除類別 - 刪除 DB 的資料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteByPost(int? id)
+        {
+            CategoryModel? obj = _db.Categories.Find(id);
+
+            if (obj is null)
+            {
+                return NotFound();
+            }
+
+            _db.Categories.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
