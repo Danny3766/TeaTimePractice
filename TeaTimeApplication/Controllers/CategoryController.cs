@@ -48,6 +48,11 @@ namespace TeaTimeApplication.Controllers
         [HttpPost]
         public IActionResult Create(CategoryModel category)
         {
+            if (category.Name == category.DisplayOrder.ToString())
+            {
+                ModelState.AddModelError("name", "類別名稱不能和顯示順序一樣");
+            }
+
             // 資料驗證
             if (ModelState.IsValid)
             {
