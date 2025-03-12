@@ -63,5 +63,46 @@ namespace TeaTimeApplication.Controllers
             
             return View();
         }
+
+        /// <summary>
+        /// 編輯類別 - 編輯表單
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult Edit(int? id)
+        {
+            if (id is null || id == 0)
+            {
+                return NotFound();
+            }
+
+            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+
+            if (categoryFromDb is null)
+            {
+                return NotFound();
+            }
+
+            return View(categoryFromDb);    
+        }
+
+        /// <summary>
+        /// 編輯類別 - 編輯資料輸入到 DB
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Edit(CategoryModel category)
+        {
+            // 資料驗證
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Update(category);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
     }
 }
