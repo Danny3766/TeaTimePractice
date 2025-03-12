@@ -39,5 +39,19 @@ namespace TeaTimeApplication.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 類別清單 - 資料輸入到 DB
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Create(CategoryModel category)
+        {
+            _db.Categories.Add(category);
+            _db.SaveChanges();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
