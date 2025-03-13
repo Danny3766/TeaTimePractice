@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TeaTime.DataAccess.Data;
+using TeaTime.DataAccess.Category;
 using TeaTime.Models;
 
 namespace TeaTimeApplication.Controllers
@@ -9,15 +9,18 @@ namespace TeaTimeApplication.Controllers
     /// </summary>
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        /// <summary>
+        /// 注入
+        /// </summary>
+        private readonly ICategoryRepository _categoryRepository;
 
         /// <summary>
         /// 建構式
         /// </summary>
-        /// <param name="db"></param>
-        public CategoryController(ApplicationDbContext db)
+        /// <param name="categoryRepository"></param>
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _db = db;
+            _categoryRepository = categoryRepository;
         }
 
         /// <summary>
@@ -26,7 +29,7 @@ namespace TeaTimeApplication.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            List<CategoryModel> categoryList = _db.Categories.ToList();
+            List<CategoryModel> categoryList = _categoryRepository.GetAll().ToList();
 
             return View(categoryList);
         }
@@ -56,8 +59,8 @@ namespace TeaTimeApplication.Controllers
             // 資料驗證
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _categoryRepository.Add(category);
+                _categoryRepository.Save();
 
                 // 新增 TempData["success"]
                 TempData["success"] = "類別新增成功!!!";
@@ -79,7 +82,7 @@ namespace TeaTimeApplication.Controllers
                 return NotFound();
             }
 
-            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+            CategoryModel? categoryFromDb = _categoryRepository.Get(u => u.Id == id);
 
             if (categoryFromDb is null)
             {
@@ -92,7 +95,7 @@ namespace TeaTimeApplication.Controllers
         /// <summary>
         /// 編輯類別 - 編輯資料輸入到 DB
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="category"></param>
         /// <returns></returns>
         [HttpPost]
         public IActionResult Edit(CategoryModel category)
@@ -100,8 +103,8 @@ namespace TeaTimeApplication.Controllers
             // 資料驗證
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _categoryRepository.Update(category);
+                _categoryRepository.Save();
 
                 // 新增 TempData["success"]
                 TempData["success"] = "類別編輯成功!!!";
@@ -123,7 +126,7 @@ namespace TeaTimeApplication.Controllers
                 return NotFound();
             }
 
-            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+            CategoryModel categoryFromDb = _categoryRepository.Get(u => u.Id == id);
 
             if (categoryFromDb is null)
             {
@@ -141,15 +144,15 @@ namespace TeaTimeApplication.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteByPost(int? id)
         {
-            CategoryModel? obj = _db.Categories.Find(id);
+            CategoryModel? obj = _categoryRepository.Get(u => u.Id == id);
 
             if (obj is null)
             {
                 return NotFound();
             }
 
-            _db.Categories.Remove(obj);
-            _db.SaveChanges();
+            _categoryRepository.Remove(obj);
+            _categoryRepository.Save();
 
             // 新增 TempData["success"]
             TempData["success"] = "類別刪除成功!!!";
