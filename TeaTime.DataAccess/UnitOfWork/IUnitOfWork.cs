@@ -1,6 +1,6 @@
 using TeaTime.DataAccess.Category;
 
-namespace TeaTime.DataAccess;
+namespace TeaTime.DataAccess.UnitOfWork;
 
 public interface IUnitOfWork
 {

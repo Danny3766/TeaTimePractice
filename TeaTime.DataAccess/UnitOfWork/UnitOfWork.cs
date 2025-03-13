@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 using TeaTime.DataAccess.Category;
 using TeaTime.DataAccess.Data;
 
-namespace TeaTime.DataAccess;
+namespace TeaTime.DataAccess.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
