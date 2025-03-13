@@ -10,7 +10,7 @@ public interface IRepository<T> where T : class
     /// <returns></returns>
     /// <remarks>將編輯的功能放在泛型 Repository 之外，只保留新增刪除的部分</remarks>
     IEnumerable<T> GetAll();
-    T Get(Expression<Func<T, bool>> filtet);
+    T Get(Expression<Func<T, bool>> filter);
     
     void Add(T entity);
     
