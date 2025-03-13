@@ -7,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// µù¥U DbContext
+// è¨»å†Š DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// ³]©w User Secrets¡]¥u¦b¶}µoÀô¹Ò±Ò¥Î¡^
+// .Net User Secrets åœ¨é–‹ç™¼ç’°å¢ƒä½¿ç”¨
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
