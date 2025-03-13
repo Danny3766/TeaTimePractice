@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TeaTime.DataAccess.Category;
 using TeaTime.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,15 +8,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-// µù¥U DbContext
+// è¨»å†Š DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// ³]©w User Secrets¡]¥u¦b¶}µoÀô¹Ò±Ò¥Î¡^
+// .Net User Secrets åœ¨é–‹ç™¼ç’°å¢ƒä½¿ç”¨
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
 }
+// è¨»å†Š ICategoryRepository,CategoryRepository DI æœå‹™
+builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 
 var app = builder.Build();
 
