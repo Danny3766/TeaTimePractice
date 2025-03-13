@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TeaTime.DataAccess.Category;
 using TeaTime.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddUserSecrets<Program>();
 }
+// 註冊 ICategoryRepository,CategoryRepository DI 服務
+builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
 
 var app = builder.Build();
 
