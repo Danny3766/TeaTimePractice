@@ -49,7 +49,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                     Value = u.Id.ToString()
                 }
             );
-            
+            // 使用 ViewBag 傳遞資料
             ViewBag.CategoryList = categoryList;
             return View();
         }
