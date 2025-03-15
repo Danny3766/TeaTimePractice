@@ -32,7 +32,7 @@ namespace TeaTime.DataAccess.Data
                     Id = 1,
                     Name = "特調水果茶",
                     Size = "大杯",
-                    Descreption = "天然果飲，迷人多變，果香茶香，迷人香",
+                    Description = "天然果飲，迷人多變，果香茶香，迷人香",
                     Price = 60
                 },
                 new ProductModel
@@ -40,7 +40,7 @@ namespace TeaTime.DataAccess.Data
                     Id = 2,
                     Name = "鐵觀音",
                     Size = "中杯",
-                    Descreption = "品鐵觀音，享人生味道",
+                    Description = "品鐵觀音，享人生味道",
                     Price = 55
                 },
                 new ProductModel
@@ -48,7 +48,7 @@ namespace TeaTime.DataAccess.Data
                     Id = 3,
                     Name = "美式咖啡",
                     Size = "中杯",
-                    Descreption = "用咖啡建構休閒時光",
+                    Description = "用咖啡建構休閒時光",
                     Price = 45
                 }
             );

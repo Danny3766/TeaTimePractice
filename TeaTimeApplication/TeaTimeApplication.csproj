@@ -21,4 +21,11 @@
     <ProjectReference Include="..\TeaTime.DataAccess\TeaTime.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="Areas\Admin\Views\Product\Create.cshtml" />
+    <AdditionalFiles Include="Areas\Admin\Views\Product\Delete.cshtml" />
+    <AdditionalFiles Include="Areas\Admin\Views\Product\Edit.cshtml" />
+    <AdditionalFiles Include="Areas\Admin\Views\Product\Index.cshtml" />
+  </ItemGroup>
+
 </Project>
