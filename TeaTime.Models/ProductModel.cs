@@ -34,5 +34,5 @@ public class ProductModel
     /// <summary>
     /// 產品描述
     /// </summary>
-    public string Descreption { get; set; }
+    public string Description { get; set; }
 }
