@@ -7,6 +7,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
     /// <summary>
     /// 類別 Controller
     /// </summary>
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         /// <summary>
