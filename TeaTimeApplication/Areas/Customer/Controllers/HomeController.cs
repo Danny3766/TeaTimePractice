@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TeaTime.Models;
 
-namespace TeaTimeApplication.Controllers
+namespace TeaTimeApplication.Areas.Customer.Controllers
 {
     public class HomeController : Controller
     {
