@@ -2,11 +2,12 @@
 using TeaTime.DataAccess.UnitOfWork;
 using TeaTime.Models;
 
-namespace TeaTimeApplication.Controllers
+namespace TeaTimeApplication.Areas.Admin.Controllers
 {
     /// <summary>
     /// 類別 Controller
     /// </summary>
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         /// <summary>
@@ -66,7 +67,7 @@ namespace TeaTimeApplication.Controllers
                 TempData["success"] = "類別新增成功!!!";
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View();
         }
 
@@ -89,7 +90,7 @@ namespace TeaTimeApplication.Controllers
                 return NotFound();
             }
 
-            return View(categoryFromDb);    
+            return View(categoryFromDb);
         }
 
         /// <summary>
