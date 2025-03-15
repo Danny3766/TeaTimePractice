@@ -37,8 +37,9 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// 調整專案的路由設定
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
