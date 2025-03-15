@@ -10,7 +10,7 @@ public class ProductViewModel
     public ProductModel Product { get; set; }
     
     /// <summary>
-    /// 產品清單
+    /// 類別清單
     /// </summary>
     public IEnumerable<SelectListItem> CategoryList { get; set; }
 }
