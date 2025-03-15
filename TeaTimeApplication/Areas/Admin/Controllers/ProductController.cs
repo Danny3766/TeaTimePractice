@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TeaTime.DataAccess.UnitOfWork;
 using TeaTime.Models;
+using TeaTime.Models.ViewModels;
 
 namespace TeaTimeApplication.Areas.Admin.Controllers
 {
@@ -41,21 +43,38 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
-            return View();
+            ProductViewModel productVm = new()
+            {
+                CategoryList = _unitOfWork.Category.GetAll().Select(u =>
+                    new SelectListItem
+                    {
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    }),
+                Product = new ProductModel()
+            };
+            
+            // 使用 ViewBag 傳遞資料
+            //ViewBag.CategoryList = categoryList;
+            
+            // 使用 ViewData 傳遞資料
+            //ViewData["CategoryList"] = categoryList;
+            
+            return View(productVm);
         }
 
         /// <summary>
         /// 產品清單 - 資料輸入到 DB
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="productVm">ProductViewModel 物件</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Create(ProductModel product)
+        public IActionResult Create(ProductViewModel productVm)
         {
             // 資料驗證
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(product);
+                _unitOfWork.Product.Add(productVm.Product);
                 _unitOfWork.Save();
 
                 // 新增 TempData["success"]
@@ -63,7 +82,15 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View();
+            productVm.CategoryList = 
+                _unitOfWork.Category.GetAll().Select(u => 
+                    new SelectListItem { 
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    }
+                );
+
+            return View(productVm);
         }
 
         /// <summary>
