@@ -19,4 +19,8 @@
     <ProjectReference Include="..\TeaTime.Models\TeaTime.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

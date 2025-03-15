@@ -11,8 +11,8 @@ using TeaTime.DataAccess.Data;
 namespace TeaTime.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250315061246_addProductsToDb")]
-    partial class addProductsToDb
+    [Migration("20250315080808_InitialTableToDb")]
+    partial class InitialTableToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,7 @@ namespace TeaTime.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Descreption")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -96,7 +96,7 @@ namespace TeaTime.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Descreption = "天然果飲，迷人多變，果香茶香，迷人香",
+                            Description = "天然果飲，迷人多變，果香茶香，迷人香",
                             Name = "特調水果茶",
                             Price = 60.0,
                             Size = "大杯"
@@ -104,7 +104,7 @@ namespace TeaTime.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            Descreption = "品鐵觀音，享人生味道",
+                            Description = "品鐵觀音，享人生味道",
                             Name = "鐵觀音",
                             Price = 55.0,
                             Size = "中杯"
@@ -112,7 +112,7 @@ namespace TeaTime.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            Descreption = "用咖啡建構休閒時光",
+                            Description = "用咖啡建構休閒時光",
                             Name = "美式咖啡",
                             Price = 45.0,
                             Size = "中杯"
