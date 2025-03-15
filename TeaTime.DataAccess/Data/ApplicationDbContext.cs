@@ -30,10 +30,11 @@ namespace TeaTime.DataAccess.Data
                 new ProductModel
                 {
                     Id = 1,
-                    Name = "特調水果茶",
+                    Name = "特調水果汁",
                     Size = "大杯",
-                    Description = "天然果飲，迷人多變，果香茶香，迷人香",
-                    Price = 60
+                    Description = "天然果飲，果香迷人多變，好喝",
+                    Price = 60,
+                    CategoryId = 1
                 },
                 new ProductModel
                 {
@@ -41,7 +42,8 @@ namespace TeaTime.DataAccess.Data
                     Name = "鐵觀音",
                     Size = "中杯",
                     Description = "品鐵觀音，享人生味道",
-                    Price = 55
+                    Price = 55,
+                    CategoryId = 2
                 },
                 new ProductModel
                 {
@@ -49,7 +51,8 @@ namespace TeaTime.DataAccess.Data
                     Name = "美式咖啡",
                     Size = "中杯",
                     Description = "用咖啡建構休閒時光",
-                    Price = 45
+                    Price = 45,
+                    CategoryId = 3
                 }
             );
         }
