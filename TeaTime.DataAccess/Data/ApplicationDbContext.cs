@@ -34,7 +34,8 @@ namespace TeaTime.DataAccess.Data
                     Size = "大杯",
                     Description = "天然果飲，果香迷人多變，好喝",
                     Price = 60,
-                    CategoryId = 1
+                    CategoryId = 1,
+                    ProductImageUrl = String.Empty
                 },
                 new ProductModel
                 {
@@ -43,7 +44,8 @@ namespace TeaTime.DataAccess.Data
                     Size = "中杯",
                     Description = "品鐵觀音，享人生味道",
                     Price = 55,
-                    CategoryId = 2
+                    CategoryId = 2,
+                    ProductImageUrl = String.Empty
                 },
                 new ProductModel
                 {
@@ -52,7 +54,8 @@ namespace TeaTime.DataAccess.Data
                     Size = "中杯",
                     Description = "用咖啡建構休閒時光",
                     Price = 45,
-                    CategoryId = 3
+                    CategoryId = 3,
+                    ProductImageUrl = String.Empty
                 }
             );
         }
