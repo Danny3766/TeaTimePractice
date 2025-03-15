@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -48,10 +49,12 @@ public class ProductModel
     /// </summary>
     /// <remarks>加上 ForeignKey 的 Attribute 目的，讓 ProductModel 知道會使用 CategoryModel</remarks>
     [ForeignKey("CategoryId")]
+    [ValidateNever]
     public CategoryModel Category { get; set; }
 
     /// <summary>
     /// 產品圖片網址
     /// </summary>
+    [ValidateNever]
     public string ProductImageUrl { get; set; }
 }
