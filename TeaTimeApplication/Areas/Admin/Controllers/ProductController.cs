@@ -66,15 +66,15 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// <summary>
         /// 產品清單 - 資料輸入到 DB
         /// </summary>
-        /// <param name="obj">ProductViewModel 物件</param>
+        /// <param name="productVm">ProductViewModel 物件</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Create(ProductViewModel obj)
+        public IActionResult Create(ProductViewModel productVm)
         {
             // 資料驗證
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(obj.Product);
+                _unitOfWork.Product.Add(productVm.Product);
                 _unitOfWork.Save();
 
                 // 新增 TempData["success"]
@@ -82,7 +82,15 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View();
+            productVm.CategoryList = 
+                _unitOfWork.Category.GetAll().Select(u => 
+                    new SelectListItem { 
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    }
+                );
+
+            return View(productVm);
         }
 
         /// <summary>
