@@ -16,14 +16,16 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// 注入
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
         /// 建構式
         /// </summary>
         /// <param name="unitOfWork"></param>
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /// <summary>
