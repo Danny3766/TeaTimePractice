@@ -188,6 +188,23 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        #region API Calls
+        
+        /// <summary>
+        /// 取得全部商品的 API
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetAll() 
+        {
+            List<ProductModel> objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
+
+            return Json(new { data = objProductList });
+        }
+
+        #endregion
+
+
         #region 標記不使用的新增 & 編輯方法
 
         /// <summary>
