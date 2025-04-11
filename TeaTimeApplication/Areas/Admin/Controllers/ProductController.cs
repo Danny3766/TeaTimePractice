@@ -162,6 +162,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// </summary>
         /// <param name="id">產品 id</param>
         /// <returns></returns>
+        [HttpDelete]
         public IActionResult Delete(int? id) 
         {
             var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
