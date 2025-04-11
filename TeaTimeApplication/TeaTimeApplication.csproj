@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <AdditionalFiles Include="Areas\Admin\Views\Product\Upsert.cshtml" />
-    <AdditionalFiles Include="Areas\Admin\Views\Product\Delete.cshtml" />
     <AdditionalFiles Include="Areas\Admin\Views\Product\Index.cshtml" />
   </ItemGroup>
 

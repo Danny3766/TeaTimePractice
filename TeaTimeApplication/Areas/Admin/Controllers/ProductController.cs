@@ -143,50 +143,50 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
 
         #endregion
 
+        #region API Calls
+        
         /// <summary>
-        /// 刪除產品 - 刪除表單
+        /// 取得全部商品的 API
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        public IActionResult Delete(int? id)
+        [HttpGet]
+        public IActionResult GetAll() 
         {
-            if (id is null || id == 0)
-            {
-                return NotFound();
-            }
+            List<ProductModel> objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
 
-            ProductModel productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-
-            if (productFromDb is null)
-            {
-                return NotFound();
-            }
-
-            return View(productFromDb);
+            return Json(new { data = objProductList });
         }
 
         /// <summary>
-        /// 刪除產品 - 刪除 DB 的資料
+        /// 刪除指定 id 產品
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">產品 id</param>
         /// <returns></returns>
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteByPost(int? id)
+        [HttpDelete]
+        public IActionResult Delete(int? id) 
         {
-            ProductModel? obj = _unitOfWork.Product.Get(u => u.Id == id);
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
 
-            if (obj is null)
+            if (productToBeDeleted == null) 
             {
-                return NotFound();
+                return Json(new { success = false, message = "刪除失敗!!!"});
             }
 
-            _unitOfWork.Product.Remove(obj);
+            var oldImagaPath = Path.Combine(
+                _webHostEnvironment.WebRootPath, productToBeDeleted.ProductImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagaPath))
+            {
+                System.IO.File.Delete(oldImagaPath);
+            }
+
+            _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
 
-            // 新增 TempData["success"]
-            TempData["success"] = "產品刪除成功!!!";
-            return RedirectToAction(nameof(Index));
+            return Json(new { success = true, message = "刪除成功!!!"});
         }
+
+        #endregion
 
         #region 標記不使用的新增 & 編輯方法
 
