@@ -92,6 +92,16 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                     Path.GetExtension(file.FileName);
                     var productPath = Path.Combine(wwwRootPath, @"images\product");
 
+                    if (!string.IsNullOrEmpty(productVm.Product.ProductImageUrl)) 
+                    {
+                        // 有新圖片上傳，刪除舊圖片
+                        var oldImagePath = Path.Combine(wwwRootPath, productVm.Product.ProductImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath)) 
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
                     using (var fileStream = new FileStream(
                         Path.Combine(productPath, fileName), FileMode.Create))
                     {
@@ -101,9 +111,17 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                     productVm.Product.ProductImageUrl = @"\image\product\" + fileName;
                 }
 
-                _unitOfWork.Product.Add(productVm.Product);
-                _unitOfWork.Save();
+                if (productVm.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productVm.Product);
+                    
+                }
+                else 
+                {
+                    _unitOfWork.Product.Update(productVm.Product);
+                }
 
+                _unitOfWork.Save();
                 // 新增 TempData["success"]
                 TempData["success"] = "產品新增成功!!!";
                 return RedirectToAction(nameof(Index));
