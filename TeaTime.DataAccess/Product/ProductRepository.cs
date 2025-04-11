@@ -29,7 +29,22 @@ namespace TeaTime.DataAccess.Product
         /// <param name="product"></param>
         public void Update(ProductModel product)
         {
-            _db.Products.Update(product);
+            var objFromDb = _db.Products.FirstOrDefault(u => u.Id == product.Id);
+
+            if (objFromDb != null)
+            {
+                objFromDb.Name = product.Name;
+                objFromDb.Size = product.Size;
+                objFromDb.Price = product.Price;
+                objFromDb.Description = product.Description;
+                objFromDb.CategoryId = product.CategoryId;
+                if (objFromDb.ProductImageUrl != null) 
+                {
+                    objFromDb.ProductImageUrl = product.ProductImageUrl;
+                }
+            }
+
+            //_db.Products.Update(product);
         }
     }
 }

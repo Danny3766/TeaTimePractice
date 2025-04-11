@@ -16,14 +16,16 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// 注入
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         /// <summary>
         /// 建構式
         /// </summary>
         /// <param name="unitOfWork"></param>
-        public ProductController(IUnitOfWork unitOfWork)
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            List<ProductModel> productList = _unitOfWork.Product.GetAll().ToList();
+            List<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
 
             return View(productList);
         }
@@ -82,9 +84,44 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             // 資料驗證
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(productVm.Product);
-                _unitOfWork.Save();
+                // 增加上團圖片的驗證邏輯
+                var wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    var fileName = Guid.NewGuid().ToString();
+                    Path.GetExtension(file.FileName);
+                    var productPath = Path.Combine(wwwRootPath, @"images\product");
 
+                    if (!string.IsNullOrEmpty(productVm.Product.ProductImageUrl)) 
+                    {
+                        // 有新圖片上傳，刪除舊圖片
+                        var oldImagePath = Path.Combine(wwwRootPath, productVm.Product.ProductImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath)) 
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(
+                        Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    productVm.Product.ProductImageUrl = @"\image\product\" + fileName;
+                }
+
+                if (productVm.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(productVm.Product);
+                    
+                }
+                else 
+                {
+                    _unitOfWork.Product.Update(productVm.Product);
+                }
+
+                _unitOfWork.Save();
                 // 新增 TempData["success"]
                 TempData["success"] = "產品新增成功!!!";
                 return RedirectToAction(nameof(Index));
