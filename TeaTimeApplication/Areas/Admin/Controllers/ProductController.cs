@@ -143,51 +143,6 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
 
         #endregion
 
-        /// <summary>
-        /// 刪除產品 - 刪除表單
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public IActionResult Delete(int? id)
-        {
-            if (id is null || id == 0)
-            {
-                return NotFound();
-            }
-
-            ProductModel productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-
-            if (productFromDb is null)
-            {
-                return NotFound();
-            }
-
-            return View(productFromDb);
-        }
-
-        /// <summary>
-        /// 刪除產品 - 刪除 DB 的資料
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteByPost(int? id)
-        {
-            ProductModel? obj = _unitOfWork.Product.Get(u => u.Id == id);
-
-            if (obj is null)
-            {
-                return NotFound();
-            }
-
-            _unitOfWork.Product.Remove(obj);
-            _unitOfWork.Save();
-
-            // 新增 TempData["success"]
-            TempData["success"] = "產品刪除成功!!!";
-            return RedirectToAction(nameof(Index));
-        }
-
         #region API Calls
         
         /// <summary>
@@ -202,8 +157,35 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             return Json(new { data = objProductList });
         }
 
-        #endregion
+        /// <summary>
+        /// 刪除指定 id 產品
+        /// </summary>
+        /// <param name="id">產品 id</param>
+        /// <returns></returns>
+        public IActionResult Delete(int? id) 
+        {
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
 
+            if (productToBeDeleted == null) 
+            {
+                return Json(new { success = false, message = "刪除失敗!!!"});
+            }
+
+            var oldImagaPath = Path.Combine(
+                _webHostEnvironment.WebRootPath, productToBeDeleted.ProductImageUrl.TrimStart('\\'));
+
+            if (System.IO.File.Exists(oldImagaPath))
+            {
+                System.IO.File.Delete(oldImagaPath);
+            }
+
+            _unitOfWork.Product.Remove(productToBeDeleted);
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "刪除成功!!!"});
+        }
+
+        #endregion
 
         #region 標記不使用的新增 & 編輯方法
 
