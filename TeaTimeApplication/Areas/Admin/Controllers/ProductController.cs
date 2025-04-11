@@ -34,7 +34,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-            List<ProductModel> productList = _unitOfWork.Product.GetAll().ToList();
+            List<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
 
             return View(productList);
         }
