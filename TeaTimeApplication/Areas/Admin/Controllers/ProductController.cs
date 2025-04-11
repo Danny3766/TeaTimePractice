@@ -84,6 +84,23 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             // 資料驗證
             if (ModelState.IsValid)
             {
+                // 增加上團圖片的驗證邏輯
+                var wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    var fileName = Guid.NewGuid().ToString();
+                    Path.GetExtension(file.FileName);
+                    var productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    using (var fileStream = new FileStream(
+                        Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    productVm.Product.ProductImageUrl = @"\image\product\" + fileName;
+                }
+
                 _unitOfWork.Product.Add(productVm.Product);
                 _unitOfWork.Save();
 
