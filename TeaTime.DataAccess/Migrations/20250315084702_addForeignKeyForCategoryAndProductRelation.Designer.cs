@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeaTime.DataAccess.Data;
 
@@ -10,9 +11,11 @@ using TeaTime.DataAccess.Data;
 namespace TeaTime.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315084702_addForeignKeyForCategoryAndProductRelation")]
+    partial class addForeignKeyForCategoryAndProductRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,10 +87,6 @@ namespace TeaTime.DataAccess.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("ProductImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -106,7 +105,6 @@ namespace TeaTime.DataAccess.Migrations
                             Description = "天然果飲，果香迷人多變，好喝",
                             Name = "特調水果汁",
                             Price = 60.0,
-                            ProductImageUrl = "",
                             Size = "大杯"
                         },
                         new
@@ -116,7 +114,6 @@ namespace TeaTime.DataAccess.Migrations
                             Description = "品鐵觀音，享人生味道",
                             Name = "鐵觀音",
                             Price = 55.0,
-                            ProductImageUrl = "",
                             Size = "中杯"
                         },
                         new
@@ -126,7 +123,6 @@ namespace TeaTime.DataAccess.Migrations
                             Description = "用咖啡建構休閒時光",
                             Name = "美式咖啡",
                             Price = 45.0,
-                            ProductImageUrl = "",
                             Size = "中杯"
                         });
                 });

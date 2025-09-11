@@ -9,8 +9,9 @@ public interface IRepository<T> where T : class
     /// </summary>
     /// <returns></returns>
     /// <remarks>將編輯的功能放在泛型 Repository 之外，只保留新增刪除的部分</remarks>
-    IEnumerable<T> GetAll();
-    T Get(Expression<Func<T, bool>> filter);
+    IEnumerable<T> GetAll(string? includeProperties = null);
+
+    T Get(Expression<Func<T, bool>> filter, string? includeProperties = null);
     
     void Add(T entity);
     
