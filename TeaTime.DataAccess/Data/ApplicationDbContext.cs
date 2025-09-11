@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TeaTime.Models;
 
 namespace TeaTime.DataAccess.Data
@@ -6,7 +8,8 @@ namespace TeaTime.DataAccess.Data
     /// <summary>
     /// 資料庫 Context
     /// </summary>
-    public class ApplicationDbContext : DbContext
+    /// </summary>
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -17,9 +20,13 @@ namespace TeaTime.DataAccess.Data
         public DbSet<CategoryModel> Categories { get; set; }
         // Products 資料表
         public DbSet<ProductModel> Products { get; set; }
+        
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<CategoryModel>().HasData(
                 new CategoryModel { Id = 1, Name = "果汁", DisplayOrder = 1 },
                 new CategoryModel { Id = 2, Name = "茶", DisplayOrder = 2 },
