@@ -15,6 +15,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
+// 註冊使用 Razor 服務
+builder.Services.AddRazorPages();
+
 // .Net User Secrets 在開發環境使用
 if (builder.Environment.IsDevelopment())
 {
@@ -42,6 +45,8 @@ app.UseRouting();
 app.UseAuthentication();
 // 授權
 app.UseAuthorization();
+//將 Razor Page 加入路由對應
+app.MapRazorPages();
 
 // 調整專案的路由設定
 app.MapControllerRoute(
