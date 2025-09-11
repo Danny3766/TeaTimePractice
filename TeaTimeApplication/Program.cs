@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TeaTime.DataAccess.Data;
 using TeaTime.DataAccess.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // 註冊 DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+
+// 註冊使用 Razor 服務
+builder.Services.AddRazorPages();
 
 // .Net User Secrets 在開發環境使用
 if (builder.Environment.IsDevelopment())
@@ -35,7 +41,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// 增加身分驗證
+app.UseAuthentication();
+// 授權
 app.UseAuthorization();
+//將 Razor Page 加入路由對應
+app.MapRazorPages();
 
 // 調整專案的路由設定
 app.MapControllerRoute(
