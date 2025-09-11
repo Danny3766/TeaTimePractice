@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TeaTime.DataAccess.Data;
 using TeaTime.DataAccess.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // 註冊 DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
 // .Net User Secrets 在開發環境使用
 if (builder.Environment.IsDevelopment())
@@ -35,6 +38,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// 增加身分驗證
+app.UseAuthentication();
+// 授權
 app.UseAuthorization();
 
 // 調整專案的路由設定
