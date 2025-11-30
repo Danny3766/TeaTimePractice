@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using TeaTime.DataAccess.Data;
 using TeaTime.DataAccess.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using TeaTime.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+// 註冊 Identity 服務
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // 註冊使用 Razor 服務
 builder.Services.AddRazorPages();
@@ -25,6 +29,9 @@ if (builder.Environment.IsDevelopment())
 }
 // 註冊 IUnitOfWork,UnitOfWork DI 服務
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+
+// 註冊 EmailSender 服務
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
