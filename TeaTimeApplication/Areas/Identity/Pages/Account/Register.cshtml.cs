@@ -2,22 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
 using TeaTime.Models;
 using TeaTime.Utility;
 
@@ -95,6 +90,17 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
             public string Password { get; set; }
 
             /// <summary>
+            /// 角色
+            /// </summary>
+            public string? Role { get; set; }
+            
+            /// <summary>
+            /// 角色列表
+            /// </summary>
+            [ValidateNever]
+            public IEnumerable<SelectListItem> RoleList { get; set; }
+
+            /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
@@ -116,6 +122,15 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager)).GetAwaiter().GetResult();
             }
 
+            // 將角色列表帶到前端頁面
+            Input = new InputModel()
+            {
+                RoleList = _roleManager.Roles.Select(r => r.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
