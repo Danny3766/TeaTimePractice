@@ -93,12 +93,18 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
             /// 角色
             /// </summary>
             public string? Role { get; set; }
-            
+
             /// <summary>
             /// 角色列表
             /// </summary>
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+
+            public string Name { get; set; }
+
+            public string? Address { get; set; }
+
+            public string? PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -109,7 +115,6 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
-
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -146,6 +151,9 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.Name = Input.Name;
+                user.Address = Input.Address;
+                user.PhoneNumber = Input.PhoneNumber;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
