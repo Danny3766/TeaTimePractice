@@ -20,7 +20,9 @@ namespace TeaTime.DataAccess.Data
         public DbSet<CategoryModel> Categories { get; set; }
         // Products 資料表
         public DbSet<ProductModel> Products { get; set; }
-        
+        // Stores 資料表
+        public DbSet<StoreModel> Stores { get; set; }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
