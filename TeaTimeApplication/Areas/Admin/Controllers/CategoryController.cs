@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TeaTime.DataAccess.UnitOfWork;
 using TeaTime.Models;
+using TeaTime.Utility;
 
 namespace TeaTimeApplication.Areas.Admin.Controllers
 {
@@ -8,6 +10,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
     /// 類別 Controller
     /// </summary>
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
         /// <summary>

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TeaTime.DataAccess\TeaTime.DataAccess.csproj" />
+    <ProjectReference Include="..\TeaTime.Utility\TeaTime.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
