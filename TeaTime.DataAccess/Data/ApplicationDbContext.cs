@@ -22,6 +22,8 @@ namespace TeaTime.DataAccess.Data
         public DbSet<ProductModel> Products { get; set; }
         // Stores 資料表
         public DbSet<StoreModel> Stores { get; set; }
+        // ShoppingCarts 資料表
+        public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
