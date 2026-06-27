@@ -1,6 +1,7 @@
 using TeaTime.DataAccess.Category;
 using TeaTime.DataAccess.Data;
 using TeaTime.DataAccess.Product;
+using TeaTime.DataAccess.ShoppingCart;
 using TeaTime.DataAccess.Store;
 
 namespace TeaTime.DataAccess.UnitOfWork;
@@ -11,6 +12,8 @@ public class UnitOfWork : IUnitOfWork
     public ICategoryRepository Category { get; private set; }
     public IProductRepository Product { get; private set; }
     public IStoreRepository Store { get; private set; }
+    public IShoppingCartRepository ShoppingCart { get; private set; }
+    public IApplicationUserRepository ApplicationUser { get; private set; }
 
     /// <summary>
     /// 建構式
@@ -22,6 +25,8 @@ public class UnitOfWork : IUnitOfWork
         Category = new CategoryRepository(_db);
         Product = new ProductRepository(_db);
         Store = new StoreRepository(_db);
+        ShoppingCart = new ShoppingCartRepository(_db);
+        ApplicationUser = new ApplicationUserRepository(_db);
     }
     
     /// <summary>
