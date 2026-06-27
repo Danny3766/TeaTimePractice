@@ -27,12 +27,13 @@ namespace TeaTimeApplication.Areas.Customer.Controllers
             shoppingCartVM = new ShoppingCartViewModel
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u =>
-                u.ApplicationUserId == userId, includeProperties: "Product")
+                u.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderHeader = new()
             };
 
             foreach (var cart in shoppingCartVM.ShoppingCartList)
             {
-                shoppingCartVM.OrderTotal += (cart.Product.Price * cart.Count);
+                shoppingCartVM.OrderHeader.OrderTotal += (cart.Product.Price * cart.Count);
             }
 
             return View(shoppingCartVM);
@@ -44,7 +45,28 @@ namespace TeaTimeApplication.Areas.Customer.Controllers
         /// <returns>購物車結帳摘要 View。</returns>
         public IActionResult Summary()
         {
-            return View();
+            var claimsIdentity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(
+                System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+
+            var shoppingCartVM = new ShoppingCartViewModel
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u =>
+                u.ApplicationUserId == userId, includeProperties: "Product"),
+                OrderHeader = new()
+            };
+
+            shoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            shoppingCartVM.OrderHeader.Name = shoppingCartVM.OrderHeader.ApplicationUser.Name;
+            shoppingCartVM.OrderHeader.PhoneNumber = shoppingCartVM.OrderHeader.ApplicationUser.PhoneNumber;
+            shoppingCartVM.OrderHeader.Address = shoppingCartVM.OrderHeader.ApplicationUser.Address;
+
+            foreach (var cart in shoppingCartVM.ShoppingCartList)
+            {
+                shoppingCartVM.OrderHeader.OrderTotal += (cart.Product.Price * cart.Count);
+            }
+
+            return View(shoppingCartVM);
         }
 
         /// <summary>
