@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TeaTime.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using TeaTime.DataAccess.Data;
 namespace TeaTime.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260626172217_addStorTable")]
+    partial class addStorTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -366,35 +369,6 @@ namespace TeaTime.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stores");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "台中市北區三民路三段129號",
-                            City = "台中市",
-                            Description = "鄰近台中一中商圈，學生消暑勝地。",
-                            Name = "台中一中店",
-                            PhoneNumber = "04-1234-5678"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "台北市大安區大安路一段11號",
-                            City = "台北市",
-                            Description = "濃厚的教育文化及熱鬧繁華的商圈，豐富整個氛圍。",
-                            Name = "台北大安店",
-                            PhoneNumber = "02-2345-6789"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Address = "台南市安平區安平路123號",
-                            City = "台南市",
-                            Description = "歷史造就了安平區的獨特風貌，茶香中蘊含了悠遠的歷史。",
-                            Name = "台南安平店",
-                            PhoneNumber = "06-3456-7890"
-                        });
                 });
 
             modelBuilder.Entity("TeaTime.Models.ApplicationUser", b =>
@@ -408,11 +382,6 @@ namespace TeaTime.DataAccess.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StoreId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("StoreId");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -477,15 +446,6 @@ namespace TeaTime.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("TeaTime.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("TeaTime.Models.StoreModel", "Store")
-                        .WithMany()
-                        .HasForeignKey("StoreId");
-
-                    b.Navigation("Store");
                 });
 #pragma warning restore 612, 618
         }
