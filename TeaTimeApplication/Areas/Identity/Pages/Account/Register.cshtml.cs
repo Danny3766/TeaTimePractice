@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using TeaTime.DataAccess.UnitOfWork;
 using TeaTime.Models;
 using TeaTime.Utility;
 
@@ -27,6 +28,7 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -34,7 +36,8 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -43,6 +46,7 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -107,6 +111,16 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
             public string? PhoneNumber { get; set; }
 
             /// <summary>
+            /// 店鋪 Id
+            /// </summary>
+            public int? StoreId { get; set; }
+
+            /// <summary>
+            /// 店鋪列表
+            /// </summary>
+            public IEnumerable<SelectListItem> StoreList { get; set; }
+
+            /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
@@ -127,13 +141,18 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Manager)).GetAwaiter().GetResult();
             }
 
-            // 將角色列表帶到前端頁面
+            // 將角色列表 & 店鋪列表帶到前端頁面
             Input = new InputModel()
             {
                 RoleList = _roleManager.Roles.Select(r => r.Name).Select(i => new SelectListItem
                 {
                     Text = i,
                     Value = i
+                }),
+                StoreList = _unitOfWork.Store.GetAll().Select(s => new SelectListItem
+                {
+                    Text = s.Name,
+                    Value = s.Id.ToString()
                 })
             };
 
@@ -154,6 +173,12 @@ namespace TeaTimeApplication.Areas.Identity.Pages.Account
                 user.Name = Input.Name;
                 user.Address = Input.Address;
                 user.PhoneNumber = Input.PhoneNumber;
+                // 如果角色是 Employee 或 Manager，則需要指定 StoreId
+                if (Input.Role == SD.Role_Employee || Input.Role == SD.Role_Manager)
+                { 
+                    user.StoreId = Input.StoreId;
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
