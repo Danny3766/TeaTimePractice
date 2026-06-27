@@ -39,6 +39,15 @@ namespace TeaTimeApplication.Areas.Customer.Controllers
         }
 
         /// <summary>
+        /// 顯示購物車結帳摘要頁面。
+        /// </summary>
+        /// <returns>購物車結帳摘要 View。</returns>
+        public IActionResult Summary()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 增加指定購物車項目的商品數量。
         /// </summary>
         /// <param name="cartId">購物車項目 id。</param>
@@ -97,3 +106,4 @@ namespace TeaTimeApplication.Areas.Customer.Controllers
         }
     }
 }
+
