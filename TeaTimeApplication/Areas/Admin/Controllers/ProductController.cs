@@ -91,9 +91,9 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                 var wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null)
                 {
-                    var fileName = Guid.NewGuid().ToString();
-                    Path.GetExtension(file.FileName);
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     var productPath = Path.Combine(wwwRootPath, @"images\product");
+                    Directory.CreateDirectory(productPath);
 
                     if (!string.IsNullOrEmpty(productVm.Product.ProductImageUrl)) 
                     {
@@ -111,7 +111,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                         file.CopyTo(fileStream);
                     }
 
-                    productVm.Product.ProductImageUrl = @"\image\product\" + fileName;
+                    productVm.Product.ProductImageUrl = @"\images\product\" + fileName;
                 }
 
                 if (productVm.Product.Id == 0)
