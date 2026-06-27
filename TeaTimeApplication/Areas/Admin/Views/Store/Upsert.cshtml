@@ -1,42 +1,42 @@
-﻿@model StoreViewModel
+﻿@model StoreModel
 
 <form method="post" enctype="multipart/form-data">
-    <input asp-for="Store.Id" hidden />
+    <input asp-for="Id" hidden />
     <div class="row">
         <div class="col-10">
             <div class="border p-3 mt-4">
                 <div class="row pb-2">
-                    <h2 class="text-primary"> @(Model.Product.Id != 0 ? "編輯" : "新增")分店</h2>
+                    <h2 class="text-primary"> @(Model.Id != 0 ? "編輯" : "新增")分店</h2>
                     <hr />
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="Store.Name" class="p-0"></label>
-                    <input asp-for="Store.Name" class="form-control" />
-                    <span asp-validation-for="Store.Name" class="text-danger"></span>
+                    <label asp-for="Name" class="p-0"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="Store.PhoneNumber" class="p-0"></label>
-                    <input asp-for="Store.PhoneNumber" class="form-control" />
-                    <span asp-validation-for="Store.PhoneNumber" class="text-danger"></span>
+                    <label asp-for="PhoneNumber" class="p-0"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="Store.Address" class="p-0"></label>
-                    <input asp-for="Store.Address" class="form-control" />
-                    <span asp-validation-for="Store.Address" class="text-danger"></span>
+                    <label asp-for="Address" class="p-0"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="Store.City" class="p-0"></label>
-                    <input asp-for="Store.City" class="form-control" />
-                    <span asp-validation-for="Store.City" class="text-danger"></span>
+                    <label asp-for="City" class="p-0"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
                 </div>
                 <div class="mb-3 row p-1">
-                    <label asp-for="Store.Description" class="p-0"></label>
-                    <input asp-for="Store.Description" class="form-control" />
-                    <span asp-validation-for="Store.Description" class="text-danger"></span>
+                    <label asp-for="Description" class="p-0"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-6 col-md-3">
-                        @if (Model.Store.Id != 0)
+                        @if (Model.Id != 0)
                         {
                             <button type="submit" class="btn btn-primary form-control">編輯</button>
                         }

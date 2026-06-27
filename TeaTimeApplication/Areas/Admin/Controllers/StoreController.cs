@@ -58,7 +58,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             {
                 // 執行編輯
                 var store = _unitOfWork.Store.Get(u => u.Id == id);
-                return View();
+                return View(store);
             }
         }
 

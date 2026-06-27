@@ -6,6 +6,9 @@ $(document).ready(function () {
 function loadDataTable()
 {
     dataTable = $('#tblData').DataTable({
+        "language": {
+            "lengthMenu": "Show _MENU_ entries"
+        },
         "ajax": {
             url: '/admin/store/getall'
         },
