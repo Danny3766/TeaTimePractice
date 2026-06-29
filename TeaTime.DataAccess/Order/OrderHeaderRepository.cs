@@ -27,5 +27,26 @@ namespace TeaTime.DataAccess.Order
         {
             _db.OrderHeaders.Update(orderHeader);
         }
+
+        /// <summary>
+        /// 依訂單表頭 id 查詢訂單並更新其處理狀態，必要時同步更新付款狀態。
+        /// </summary>
+        /// <param name="id">要更新狀態的訂單表頭 id。</param>
+        /// <param name="orderStatus">要寫入訂單表頭的處理狀態。</param>
+        /// <param name="paymentStatus">選填的付款狀態，用於需要同步調整付款結果的流程。</param>
+        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
+        {
+            var orderFromDb = _db.OrderHeaders.FirstOrDefault(u => u.Id == id);
+
+            if (orderFromDb != null) 
+            {
+                orderFromDb.OrderStatus = orderStatus;
+
+                if (string.IsNullOrEmpty(paymentStatus)) 
+                {
+                    orderFromDb.PaymentStatus = paymentStatus;
+                }
+            }
+        }
     }
 }
