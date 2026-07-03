@@ -1,13 +1,34 @@
-﻿var dataTable;
+var dataTable;
 $(document).ready(function () {
-    loadDataTable();
+    var url = window.location.search;
+    console.log(url);
+
+    if (url.includes("Pending")) {
+        loadDataTable("Pending");
+    }
+    else
+    {
+        if (url.includes("Ready")) {
+            loadDataTable("Ready");
+        }
+        else
+        {
+            if (url.includes("Completed")) {
+                loadDataTable("Completed");
+            }
+            else
+            {
+                loadDataTable("all")
+            }
+        }
+    }
 });
 
-function loadDataTable()
+function loadDataTable(status)
 {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            url: '/admin/order/getall'
+            url: '/admin/order/getall?status=' + status
         },
         "columns": [
             { data: 'id', "width": "10%" },
@@ -20,7 +41,7 @@ function loadDataTable()
                 data: 'id',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
-                                <a href="/admin/order/details?id=${data}" class="btn btn-primary mx-2">
+                                <a href="/admin/order/details?orderId=${data}" class="btn btn-primary mx-2">
                                     <i class="bi bi-pencil-square"></i></a>
                             </div>`
                 },
