@@ -88,7 +88,7 @@ namespace TeaTimeApplication.Areas.Customer.Controllers
                 u.ApplicationUserId == userId, includeProperties: "Product");
             shoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
             // 訂單日期為今天日期
-            shoppingCartVM.OrderHeader.ApplicationId = userId;
+            shoppingCartVM.OrderHeader.ApplicationUserId = userId;
             ApplicationUser application = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
             
             // 計算訂單總金額
@@ -133,7 +133,7 @@ namespace TeaTimeApplication.Areas.Customer.Controllers
             _unitOfWork.OrderHeader.UpdateStatus(id, SD.StatusPending);
             // 送出訂單後將購物車內的商品刪除
             List<ShoppingCartModel> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u =>
-            u.ApplicationUserId == orderHeader.ApplicationId).ToList();
+            u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
 
             _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();

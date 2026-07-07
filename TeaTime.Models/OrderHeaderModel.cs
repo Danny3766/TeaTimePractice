@@ -16,12 +16,12 @@ namespace TeaTime.Models
         /// <summary>
         /// 建立此訂單的會員識別碼，用於將結帳產生的訂單歸屬到目前登入的使用者。
         /// </summary>
-        public string ApplicationId { get; set; }
+        public string ApplicationUserId { get; set; }
 
         /// <summary>
         /// 建立此訂單的會員資料，用於訂單建立或查詢時取得會員帳號相關資訊。
         /// </summary>
-        [ForeignKey("ApplicationId")]
+        [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
 
