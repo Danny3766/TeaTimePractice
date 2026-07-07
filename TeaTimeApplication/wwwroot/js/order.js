@@ -6,21 +6,20 @@ $(document).ready(function () {
     if (url.includes("Pending")) {
         loadDataTable("Pending");
     }
-    else
-    {
-        if (url.includes("Ready")) {
-            loadDataTable("Ready");
-        }
-        else
-        {
-            if (url.includes("Completed")) {
-                loadDataTable("Completed");
-            }
-            else
-            {
-                loadDataTable("all")
-            }
-        }
+    else if (url.includes("Processing")) {
+        loadDataTable("Processing");
+    }
+    else if (url.includes("Ready")) {
+        loadDataTable("Ready");
+    }
+    else if (url.includes("Completed")) {
+        loadDataTable("Completed");
+    }
+    else if (url.includes("Cancelled")) {
+        loadDataTable("Cancelled");
+    }
+    else {
+        loadDataTable("all");
     }
 });
 

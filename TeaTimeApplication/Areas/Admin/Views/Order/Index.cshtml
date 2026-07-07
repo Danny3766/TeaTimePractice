@@ -4,6 +4,7 @@
     var processing = "text-primary";
     var ready = "text-primary";
     var completed = "text-primary";
+    var cancelled = "text-primary";
     var all = "text-primary";
 
     switch(status)
@@ -22,6 +23,10 @@
 
         case "Completed":
             completed = "active text-white";
+            break;
+
+        case "Cancelled":
+            cancelled = "active text-white";
             break;
 
         default:
@@ -43,19 +48,23 @@
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="Processing">
-                    <li class="list-group-item" @processing>訂單準備中</li>
+                    <li class="list-group-item @processing">訂單準備中</li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="Ready">
-                    <li class="list-group-item" @ready>可取餐</li>
+                    <li class="list-group-item @ready">可取餐</li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="Completed">
-                    <li class="list-group-item" @completed>已完成</li>
+                    <li class="list-group-item @completed">已完成</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order"
+                   asp-action="Index" asp-route-status="Cancelled">
+                    <li class="list-group-item @cancelled">已取消</li>
                 </a>
                 <a style="text-decoration:none;" asp-controller="Order"
                    asp-action="Index" asp-route-status="all">
-                    <li class="list-group-item" @all>全部訂單</li>
+                    <li class="list-group-item @all">全部訂單</li>
                 </a>
             </ul>
         </div>

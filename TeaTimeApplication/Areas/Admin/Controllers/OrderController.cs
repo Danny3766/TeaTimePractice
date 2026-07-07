@@ -51,9 +51,11 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// 更新訂單訂購人資訊，並在更新完成後返回訂單詳情頁。
+        /// 後台人員更新訂單訂購人資訊，並在更新完成後返回訂單詳情頁。
         /// </summary>
         /// <returns>重新導向至更新後訂單的詳情頁。</returns>
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee + "," + SD.Role_Manager)]
         public IActionResult UpdateOrderDetail() 
         {
             var orderHeaderFromDb = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id);
@@ -69,13 +71,75 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id });
         }
 
+        /// <summary>
+        /// 將訂單狀態更新為準備中，並在更新完成後返回訂單詳情頁。
+        /// </summary>
+        /// <returns>重新導向至更新後訂單的詳情頁。</returns>
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee + "," + SD.Role_Manager)]
+        public IActionResult StartProcessing() 
+        {
+            _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusInProcess);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "訂單狀態更新成功!!!";
+
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
+        }
+
+        /// <summary>
+        /// 將訂單狀態更新為可取餐，並在更新完成後返回訂單詳情頁。
+        /// </summary>
+        /// <returns>重新導向至更新後訂單的詳情頁。</returns>
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee + "," + SD.Role_Manager)]
+        public IActionResult OrderReady() 
+        {
+            _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusReady);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "訂單狀態更新成功!!!";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
+        }
+
+        /// <summary>
+        /// 將訂單狀態更新為已完成，並在更新完成後返回訂單詳情頁。
+        /// </summary>
+        /// <returns>重新導向至更新後訂單的詳情頁。</returns>
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee + "," + SD.Role_Manager)]
+        public IActionResult OrderCompleted()
+        {
+            _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusCompleted);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "訂單狀態更新成功!!!";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
+        }
+
+
+        /// <summary>
+        /// 將訂單狀態更新為已取消，並在更新完成後返回訂單詳情頁。
+        /// </summary>
+        /// <returns>重新導向至更新後訂單的詳情頁。</returns>
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Employee + "," + SD.Role_Manager)]
+        public IActionResult CancelOrder() 
+        {
+            _unitOfWork.OrderHeader.UpdateStatus(OrderVM.OrderHeader.Id, SD.StatusCancelled);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "訂單取消成功!!!";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderHeader.Id });
+        }
 
 
         #region API Calls
 
         /// <summary>
-        /// 取得全部訂單資料，供訂單管理清單 DataTable 載入使用。
+        /// 取得指定狀態的訂單資料，供訂單管理清單 DataTable 載入使用。
         /// </summary>
+        /// <param name="status">訂單狀態篩選條件；傳入 all 或未知值時回傳未依狀態篩選的訂單資料。</param>
         /// <returns>包含訂單表頭與會員資料的 JSON 結果。</returns>
         [HttpGet]
         public IActionResult GetAll(string status)
@@ -110,6 +174,10 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
 
                 case "Completed":
                     objOrderHeaders = objOrderHeaders.Where(u => u.OrderStatus == SD.StatusCompleted);
+                    break;
+
+                case "Cancelled":
+                    objOrderHeaders = objOrderHeaders.Where(u => u.OrderStatus == SD.StatusCancelled);
                     break;
 
                 default:

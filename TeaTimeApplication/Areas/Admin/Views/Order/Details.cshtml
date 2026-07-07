@@ -122,10 +122,25 @@
                                 </li>
                             </ul>
 
-                            <button type="submit" class="btn btn-primary form-control my-1">接受訂單</button>
-                            <button type="submit" class="btn btn-primary form-control my-1">製作完成(通知顧客取餐)</button>
-                            <button type="submit" class="btn btn-success form-control my-1">確認付款(訂單完成)</button>
-                            <button type="submit" class="btn btn-danger form-control my-1">取消訂單</button>
+                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee) || User.IsInRole(SD.Role_Manager))
+                            {
+                                @if (Model.OrderHeader.OrderStatus == SD.StatusPending)
+                                {
+                                    <button type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1">接受訂單</button>
+                                }
+                                @if (Model.OrderHeader.OrderStatus == SD.StatusInProcess)
+                                {
+                                    <button type="submit" asp-action="OrderReady" class="btn btn-primary form-control my-1">製作完成(通知顧客取餐)</button>
+                                }
+                                @if (Model.OrderHeader.OrderStatus == SD.StatusReady)
+                                {
+                                    <button type="submit" asp-action="OrderCompleted" class="btn btn-success form-control my-1">確認付款(訂單完成)</button>
+                                }
+                                @if (Model.OrderHeader.OrderStatus != SD.StatusCompleted && Model.OrderHeader.OrderStatus != SD.StatusCancelled)
+                                {
+                                    <button type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1">取消訂單</button>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
