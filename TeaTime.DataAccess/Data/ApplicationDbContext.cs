@@ -24,8 +24,12 @@ namespace TeaTime.DataAccess.Data
         public DbSet<StoreModel> Stores { get; set; }
         // ShoppingCarts 資料表
         public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
-
+        // ApplicationUsers 資料表
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        // OrderHeaders 資料表
+        public DbSet<OrderHeaderModel> OrderHeaders { get; set; }
+        // OrderDetails 資料表
+        public DbSet<OrderDetailModel> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

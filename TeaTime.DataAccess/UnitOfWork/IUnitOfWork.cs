@@ -1,4 +1,5 @@
 using TeaTime.DataAccess.Category;
+using TeaTime.DataAccess.Order;
 using TeaTime.DataAccess.Product;
 using TeaTime.DataAccess.ShoppingCart;
 using TeaTime.DataAccess.Store;
@@ -16,6 +17,10 @@ public interface IUnitOfWork
     IShoppingCartRepository ShoppingCart { get; }
 
     IApplicationUserRepository ApplicationUser { get; }
+
+    IOrderHeaderRepository OrderHeader { get; }
+
+    IOrderDetailRepository OrderDetail { get; }
 
     void Save();
 }
