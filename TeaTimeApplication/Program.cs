@@ -4,6 +4,7 @@ using TeaTime.DataAccess.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using TeaTime.Utility;
+using TeaTime.DataAccess.DBInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
+
+// 註冊資料庫初始化器，供啟動流程套用 migration 並建立預設身分資料。
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 // 註冊使用 Razor 服務
 builder.Services.AddRazorPages();
@@ -56,6 +60,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// 在啟用驗證與授權前初始化資料庫、角色與預設管理者帳號。
+SeedDatabase();
+
 // 增加身分驗證
 app.UseAuthentication();
 // 授權
@@ -69,3 +76,16 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+/// <summary>
+/// 建立服務範圍並執行資料庫初始化流程，確保 migration、預設角色與管理者帳號在應用程式啟動時完成設定。
+/// </summary>
+void SeedDatabase() 
+{
+    using (var scope = app.Services.CreateScope()) 
+    {
+        // 透過獨立 scope 解析 scoped service，避免直接從 root provider 取得資料庫相關服務。
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TeaTime.Models\TeaTime.Models.csproj" />
+    <ProjectReference Include="..\TeaTime.Utility\TeaTime.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>
