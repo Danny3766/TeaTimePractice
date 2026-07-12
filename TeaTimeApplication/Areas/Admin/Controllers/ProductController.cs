@@ -92,13 +92,13 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                 if (file != null)
                 {
                     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    var productPath = Path.Combine(wwwRootPath, @"images\product");
+                    var productPath = Path.Combine(wwwRootPath, "images", "product");
                     Directory.CreateDirectory(productPath);
 
                     if (!string.IsNullOrEmpty(productVm.Product.ProductImageUrl)) 
                     {
                         // 有新圖片上傳，刪除舊圖片
-                        var oldImagePath = Path.Combine(wwwRootPath, productVm.Product.ProductImageUrl.TrimStart('\\'));
+                        var oldImagePath = Path.Combine(wwwRootPath, productVm.Product.ProductImageUrl.TrimStart('/', '\\'));
                         if (System.IO.File.Exists(oldImagePath)) 
                         {
                             System.IO.File.Delete(oldImagePath);
@@ -111,7 +111,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
                         file.CopyTo(fileStream);
                     }
 
-                    productVm.Product.ProductImageUrl = @"\images\product\" + fileName;
+                    productVm.Product.ProductImageUrl = "/images/product/" + fileName;
                 }
 
                 if (productVm.Product.Id == 0)
@@ -176,7 +176,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
             }
 
             var oldImagaPath = Path.Combine(
-                _webHostEnvironment.WebRootPath, productToBeDeleted.ProductImageUrl.TrimStart('\\'));
+                _webHostEnvironment.WebRootPath, productToBeDeleted.ProductImageUrl.TrimStart('/', '\\'));
 
             if (System.IO.File.Exists(oldImagaPath))
             {
