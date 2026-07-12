@@ -12,7 +12,7 @@ namespace TeaTimeApplication.Areas.Admin.Controllers
     /// 產品 Controller
     /// </summary>
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Admin)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Manager)]
     public class ProductController : Controller
     {
         /// <summary>
