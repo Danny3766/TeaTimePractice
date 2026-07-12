@@ -11,12 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Load local User Secrets before reading configuration values, then re-apply
+// Keep Development on appsettings.Development.json. For non-Development local
+// runs, load User Secrets before reading configuration values, then re-apply
 // environment and command-line providers so Azure App Service settings win.
-builder.Configuration
-    .AddUserSecrets<Program>(optional: true)
-    .AddEnvironmentVariables()
-    .AddCommandLine(args);
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Configuration
+        .AddUserSecrets<Program>(optional: true)
+        .AddEnvironmentVariables()
+        .AddCommandLine(args);
+}
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // 註冊 DbContext
