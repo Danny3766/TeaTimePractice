@@ -11,6 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Load local User Secrets before reading configuration values, then re-apply
+// environment and command-line providers so Azure App Service settings win.
+builder.Configuration
+    .AddUserSecrets<Program>(optional: true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args);
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // 註冊 DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,11 +41,6 @@ builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 // 註冊使用 Razor 服務
 builder.Services.AddRazorPages();
 
-// .Net User Secrets 在開發環境使用
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-}
 // 註冊 IUnitOfWork,UnitOfWork DI 服務
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
