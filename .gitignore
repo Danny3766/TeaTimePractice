@@ -22,6 +22,7 @@ ehthumbs.db
 
 # .net core appsettings
 secrets.json
+TeaTimeApplication/appsettings.Production.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

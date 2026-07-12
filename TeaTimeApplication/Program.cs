@@ -4,11 +4,19 @@ using TeaTime.DataAccess.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using TeaTime.Utility;
+using TeaTime.DataAccess.DBInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Load local User Secrets before reading configuration values, then re-apply
+// environment and command-line providers so Azure App Service settings win.
+builder.Configuration
+    .AddUserSecrets<Program>(optional: true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 // 註冊 DbContext
@@ -27,14 +35,12 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+// 註冊資料庫初始化器，供啟動流程套用 migration 並建立預設身分資料。
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 // 註冊使用 Razor 服務
 builder.Services.AddRazorPages();
 
-// .Net User Secrets 在開發環境使用
-if (builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddUserSecrets<Program>();
-}
 // 註冊 IUnitOfWork,UnitOfWork DI 服務
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
@@ -56,6 +62,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// 在啟用驗證與授權前初始化資料庫、角色與預設管理者帳號。
+SeedDatabase();
+
 // 增加身分驗證
 app.UseAuthentication();
 // 授權
@@ -69,3 +78,16 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+/// <summary>
+/// 建立服務範圍並執行資料庫初始化流程，確保 migration、預設角色與管理者帳號在應用程式啟動時完成設定。
+/// </summary>
+void SeedDatabase() 
+{
+    using (var scope = app.Services.CreateScope()) 
+    {
+        // 透過獨立 scope 解析 scoped service，避免直接從 root provider 取得資料庫相關服務。
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
